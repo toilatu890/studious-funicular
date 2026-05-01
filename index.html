@@ -103,52 +103,74 @@
     </div>
 
     <script>
-        function handleLogin() {
-            const user = document.getElementById('username').value;
-            const pass = document.getElementById('password').value;
-            if(user.length > 2 && pass.length > 2) {
-                document.getElementById('auth-view').classList.add('hidden-view');
-                document.getElementById('dashboard-view').classList.remove('hidden-view');
-                document.getElementById('display-user').innerText = user;
-            } else {
-                alert("Vui lòng nhập tên và mật khẩu hợp lệ!");
-            }
-        }
+        async function handleLogin() {
+    const u = document.getElementById('username').value;
+    const p = document.getElementById('password').value;
+    const captcha = grecaptcha.getResponse();
 
-        function handleRegister() {
-            const user = document.getElementById('username').value;
-            const pass = document.getElementById('password').value;
-            if(user.length > 2 && pass.length > 2) {
-                alert("Đăng ký thành công! Đang tự động đăng nhập...");
-                handleLogin();
-            } else {
-                alert("Tên và mật khẩu phải dài hơn 2 ký tự!");
-            }
-        }
+    if (!u || !p) return alert("Vui lòng nhập đủ thông tin!");
+    if (!captcha) return alert("Vui lòng xác minh Captcha!");
 
-        function logout() {
-            document.getElementById('dashboard-view').classList.add('hidden-view');
-            document.getElementById('auth-view').classList.remove('hidden-view');
-            document.getElementById('username').value = "";
-            document.getElementById('password').value = "";
-        }
+    const res = await fetch('/api/auth', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ type: 'login', username: u, password: p, captchaToken: captcha })
+    });
 
-        function openPayment(plan, price) {
-            document.getElementById('dashboard-view').classList.add('hidden-view');
-            document.getElementById('payment-view').classList.remove('hidden-view');
-            document.getElementById('selected-plan').innerText = plan;
-            document.getElementById('selected-price').innerText = price;
-        }
+    const data = await res.json();
+    if (res.ok) {
+        document.getElementById('auth-view').classList.add('hidden-view');
+        document.getElementById('dashboard-view').classList.remove('hidden-view');
+        document.getElementById('display-user').innerText = u;
+        grecaptcha.reset();
+    } else {
+        alert(data.msg);
+        grecaptcha.reset();
+    }
+}
 
-        function closePayment() {
-            document.getElementById('payment-view').classList.add('hidden-view');
-            document.getElementById('dashboard-view').classList.remove('hidden-view');
-        }
+async function handleRegister() {
+    const u = document.getElementById('username').value;
+    const p = document.getElementById('password').value;
+    const captcha = grecaptcha.getResponse();
 
-        function submitPayment() {
-            alert("Đã gửi thẻ, hệ thống đang xử lý! Vui lòng chờ...");
-            closePayment();
-        }
+    if (!u || !p) return alert("Vui lòng nhập đủ thông tin!");
+    if (!captcha) return alert("Vui lòng xác minh Captcha sưng bro!");
+
+    const res = await fetch('/api/auth', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ type: 'register', username: u, password: p, captchaToken: captcha })
+    });
+
+    const data = await res.json();
+    alert(data.msg);
+    grecaptcha.reset();
+}
+
+function logout() {
+    document.getElementById('dashboard-view').classList.add('hidden-view');
+    document.getElementById('auth-view').classList.remove('hidden-view');
+    document.getElementById('username').value = "";
+    document.getElementById('password').value = "";
+}
+
+function openPayment(plan, price) {
+    document.getElementById('dashboard-view').classList.add('hidden-view');
+    document.getElementById('payment-view').classList.remove('hidden-view');
+    document.getElementById('selected-plan').innerText = plan;
+    document.getElementById('selected-price').innerText = price;
+}
+
+function closePayment() {
+    document.getElementById('payment-view').classList.add('hidden-view');
+    document.getElementById('dashboard-view').classList.remove('hidden-view');
+}
+
+function submitPayment() {
+    alert("Hệ thống nạp thẻ đang bảo trì, vui lòng liên hệ Admin!");
+    closePayment();
+}
     </script>
 </body>
 </html>
