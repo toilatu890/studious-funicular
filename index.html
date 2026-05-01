@@ -3,99 +3,152 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Key Premium TuX Hub</title>
+    <title>TuX Hub | Store</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        body { background-color: #05070a; color: #e2e8f0; font-family: 'Inter', sans-serif; }
-        .neon-text { text-shadow: 0 0 10px rgba(34, 211, 238, 0.5); }
-        .card-glow:hover { border-color: #22d3ee; box-shadow: 0 0 20px rgba(34, 211, 238, 0.1); transition: 0.3s; }
-        .bg-glass { background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(12px); }
+        body { background-color: #f8fafc; color: #0f172a; font-family: 'Inter', sans-serif; }
+        .glass-panel { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); border: 1px solid #e2e8f0; box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
+        .hidden-view { display: none; }
     </style>
 </head>
-<body>
+<body class="min-h-screen flex flex-col items-center justify-center p-4">
 
-    <nav class="fixed w-full z-50 bg-glass border-b border-gray-800 px-6 py-4 flex justify-between items-center">
-        <h1 class="text-xl font-black text-cyan-400 tracking-tighter">TÚ ZAI <span class="text-white">STORE</span></h1>
-        <div class="hidden md:flex space-x-6 text-sm font-medium">
-            <a href="#prices" class="hover:text-cyan-400">Bảng Giá</a>
-            <a href="#how-to" class="hover:text-cyan-400">Cách Mua</a>
-            <a href="#policy" class="hover:text-cyan-400">Chính Sách</a>
+    <div id="auth-view" class="w-full max-w-md glass-panel p-8 rounded-3xl">
+        <h2 class="text-3xl font-black text-center mb-2 text-blue-600">TuX Store</h2>
+        <p class="text-center text-gray-500 mb-8 text-sm">Đăng nhập hoặc tạo tài khoản để mua Key</p>
+        
+        <div class="space-y-4">
+            <input type="text" id="username" placeholder="Tên đăng nhập" class="w-full bg-gray-50 border border-gray-200 p-3 rounded-xl outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition">
+            <input type="password" id="password" placeholder="Mật khẩu" class="w-full bg-gray-50 border border-gray-200 p-3 rounded-xl outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition">
+            
+            <button onclick="handleLogin()" class="w-full bg-blue-600 text-white font-bold py-3 rounded-xl hover:bg-blue-700 transition shadow-lg shadow-blue-500/30">
+                ĐĂNG NHẬP
+            </button>
+            <button onclick="handleRegister()" class="w-full bg-white text-blue-600 border border-blue-200 font-bold py-3 rounded-xl hover:bg-blue-50 transition">
+                TẠO TÀI KHOẢN MỚI
+            </button>
         </div>
-        <a href="https://zalo.me" class="bg-cyan-600 px-4 py-2 rounded-lg text-xs font-bold uppercase">Hỗ Trợ</a>
-    </nav>
+    </div>
 
-    <section class="pt-32 pb-20 px-6 text-center">
-        <h2 class="text-4xl md:text-6xl font-extrabold mb-4 neon-text">Nâng Tầm Trải Nghiệm <br><span class="text-cyan-400">Roblox Scripting</span></h2>
-        <p class="text-gray-400 max-w-xl mx-auto mb-10">Hệ thống cung cấp Key tự động, uy tín, bảo mật và hỗ trợ cực nhanh cho anh em scripter.</p>
-        <a href="#prices" class="bg-white text-black px-8 py-4 rounded-2xl font-bold text-lg hover:scale-105 transition transform inline-block">MUA KEY NGAY</a>
-    </section>
+    <div id="dashboard-view" class="w-full max-w-4xl hidden-view">
+        <nav class="glass-panel rounded-2xl mb-6 p-4 flex justify-between items-center">
+            <h1 class="text-xl font-black text-blue-600">TuX<span class="text-gray-800">Store</span></h1>
+            <div class="flex items-center gap-4">
+                <span class="text-sm font-semibold text-gray-600">Xin chào, <span id="display-user" class="text-blue-600"></span>!</span>
+                <button onclick="logout()" class="text-red-500 text-sm font-bold hover:underline">Thoát</button>
+            </div>
+        </nav>
 
-    <section id="prices" class="py-20 px-6 bg-[#0a0f1a]">
-        <div class="max-w-5xl mx-auto text-center mb-12">
-            <h3 class="text-3xl font-bold mb-2">BẢNG GIÁ KEY</h3>
-            <div class="h-1 w-20 bg-cyan-500 mx-auto"></div>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-            <div class="bg-[#111827] border border-gray-800 p-8 rounded-3xl card-glow text-center">
-                <h4 class="text-gray-400 font-bold mb-4 uppercase">Gói Phổ Thông</h4>
-                <div class="text-4xl font-black mb-2">10.000đ</div>
-                <div class="text-cyan-400 mb-6 font-bold">Hạn dùng 7 Ngày</div>
-                <ul class="text-sm text-gray-500 space-y-3 mb-8 text-left italic">
-                    <li><i class="fa-solid fa-check text-green-500 mr-2"></i> Full chức năng script</li>
-                    <li><i class="fa-solid fa-check text-green-500 mr-2"></i> Thẻ Viettel 10k</li>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="glass-panel p-6 rounded-3xl text-center flex flex-col h-full">
+                <h4 class="text-gray-500 font-bold mb-2 uppercase">Key 1 Tuần</h4>
+                <div class="text-4xl font-black mb-4">10.000đ</div>
+                <ul class="text-sm text-gray-600 space-y-2 mb-6 text-left flex-grow">
+                    <li><i class="fa-solid fa-check text-green-500 mr-2"></i>Thẻ Viettel 10k</li>
+                    <li><i class="fa-solid fa-check text-green-500 mr-2"></i>Hỗ trợ cập nhật</li>
                 </ul>
-                <button class="w-full bg-gray-800 py-3 rounded-xl font-bold hover:bg-cyan-600 transition">CHỌN MUA</button>
+                <button onclick="openPayment('Key 1 Tuần', '10.000đ')" class="w-full bg-blue-100 text-blue-700 py-3 rounded-xl font-bold hover:bg-blue-200 transition">MUA NGAY</button>
             </div>
 
-            <div class="bg-[#111827] border-2 border-cyan-500 p-8 rounded-3xl card-glow text-center relative transform md:-translate-y-4">
-                <span class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-cyan-500 text-black text-[10px] font-black px-4 py-1 rounded-full">PHỔ BIẾN NHẤT</span>
-                <h4 class="text-gray-400 font-bold mb-4 uppercase">Gói Game Thủ</h4>
-                <div class="text-4xl font-black mb-2">20.000đ</div>
-                <div class="text-cyan-400 mb-6 font-bold">Hạn dùng 30 Ngày</div>
-                <ul class="text-sm text-gray-500 space-y-3 mb-8 text-left italic">
-                    <li><i class="fa-solid fa-check text-green-500 mr-2"></i> Ưu tiên cập nhật mới</li>
-                    <li><i class="fa-solid fa-check text-green-500 mr-2"></i> Thẻ Viettel 20k</li>
+            <div class="glass-panel p-6 rounded-3xl text-center border-2 border-blue-500 relative flex flex-col h-full transform md:-translate-y-2 shadow-xl">
+                <span class="absolute -top-3 left-1/2 -translate-x-1/2 bg-blue-500 text-white text-[10px] font-black px-4 py-1 rounded-full">BÁN CHẠY</span>
+                <h4 class="text-gray-500 font-bold mb-2 uppercase">Key 1 Tháng</h4>
+                <div class="text-4xl font-black mb-4">20.000đ</div>
+                <ul class="text-sm text-gray-600 space-y-2 mb-6 text-left flex-grow">
+                    <li><i class="fa-solid fa-check text-green-500 mr-2"></i>Thẻ Viettel 20k</li>
+                    <li><i class="fa-solid fa-check text-green-500 mr-2"></i>Ưu tiên support</li>
                 </ul>
-                <button class="w-full bg-cyan-600 py-3 rounded-xl font-bold hover:bg-cyan-500 transition">CHỌN MUA</button>
+                <button onclick="openPayment('Key 1 Tháng', '20.000đ')" class="w-full bg-blue-600 text-white py-3 rounded-xl font-bold hover:bg-blue-700 transition shadow-lg shadow-blue-500/30">MUA NGAY</button>
             </div>
 
-            <div class="bg-[#111827] border border-gray-800 p-8 rounded-3xl card-glow text-center">
-                <h4 class="text-gray-400 font-bold mb-4 uppercase">Gói Huyền Thoại</h4>
-                <div class="text-4xl font-black mb-2">50.000đ</div>
-                <div class="text-cyan-400 mb-6 font-bold">Dùng Vĩnh Viễn</div>
-                <ul class="text-sm text-gray-500 space-y-3 mb-8 text-left italic">
-                    <li><i class="fa-solid fa-check text-green-500 mr-2"></i> Không bao giờ hết hạn</li>
-                    <li><i class="fa-solid fa-check text-green-500 mr-2"></i> Thẻ Viettel 50k</li>
+            <div class="glass-panel p-6 rounded-3xl text-center flex flex-col h-full">
+                <h4 class="text-gray-500 font-bold mb-2 uppercase">Key Vĩnh Viễn</h4>
+                <div class="text-4xl font-black mb-4">50.000đ</div>
+                <ul class="text-sm text-gray-600 space-y-2 mb-6 text-left flex-grow">
+                    <li><i class="fa-solid fa-check text-green-500 mr-2"></i>Thẻ Viettel 50k</li>
+                    <li><i class="fa-solid fa-check text-green-500 mr-2"></i>Dùng trọn đời</li>
                 </ul>
-                <button class="w-full bg-gray-800 py-3 rounded-xl font-bold hover:bg-cyan-600 transition">CHỌN MUA</button>
+                <button onclick="openPayment('Key Vĩnh Viễn', '50.000đ')" class="w-full bg-blue-100 text-blue-700 py-3 rounded-xl font-bold hover:bg-blue-200 transition">MUA NGAY</button>
             </div>
         </div>
-    </section>
+    </div>
 
-    <section id="policy" class="py-20 px-6 max-w-4xl mx-auto">
-        <h3 class="text-2xl font-bold mb-8 text-center text-cyan-400">CHÍNH SÁCH & ĐIỀU KHOẢN</h3>
-        <div class="space-y-6">
-            <div class="bg-gray-900/50 p-6 rounded-2xl border border-gray-800">
-                <h5 class="font-bold mb-2 text-white"><i class="fa-solid fa-shield-halved mr-2 text-cyan-500"></i> Quy định sử dụng Key</h5>
-                <p class="text-sm text-gray-400 leading-relaxed italic">Mỗi Key mua tại hệ thống chỉ được liên kết với 01 thiết bị duy nhất (HWID). Mọi hành vi chia sẻ Key hoặc tìm cách bẻ khóa (crack) sẽ dẫn đến việc khóa Key vĩnh viễn mà không báo trước.</p>
+    <div id="payment-view" class="w-full max-w-md glass-panel p-8 rounded-3xl hidden-view">
+        <button onclick="closePayment()" class="text-gray-400 hover:text-gray-700 mb-4"><i class="fa-solid fa-arrow-left mr-2"></i>Quay lại</button>
+        <h2 class="text-2xl font-black text-gray-800 mb-2">Thanh Toán</h2>
+        <p class="text-sm text-gray-500 mb-6">Bạn đang mua: <span id="selected-plan" class="font-bold text-blue-600"></span> (<span id="selected-price"></span>)</p>
+        
+        <div class="space-y-4">
+            <div>
+                <label class="text-xs font-bold text-gray-600 uppercase">Loại thẻ</label>
+                <select class="w-full bg-gray-50 border border-gray-200 p-3 rounded-xl outline-none mt-1">
+                    <option>Viettel</option>
+                    <option>Vinaphone</option>
+                    <option>Mobifone</option>
+                </select>
             </div>
-            <div class="bg-gray-900/50 p-6 rounded-2xl border border-gray-800">
-                <h5 class="font-bold mb-2 text-white"><i class="fa-solid fa-rotate-left mr-2 text-cyan-500"></i> Chính sách hoàn tiền</h5>
-                <p class="text-sm text-gray-400 leading-relaxed italic">Chúng tôi không hỗ trợ hoàn tiền sau khi Key đã được hệ thống xuất ra thành công. Vui lòng kiểm tra kỹ loại Key và thời hạn trước khi nhấn xác nhận thanh toán.</p>
+            <div>
+                <label class="text-xs font-bold text-gray-600 uppercase">Mã thẻ (PIN)</label>
+                <input type="text" class="w-full bg-gray-50 border border-gray-200 p-3 rounded-xl outline-none mt-1" placeholder="Nhập mã thẻ">
             </div>
-            <div class="bg-gray-900/50 p-6 rounded-2xl border border-gray-800">
-                <h5 class="font-bold mb-2 text-white"><i class="fa-solid fa-circle-info mr-2 text-cyan-500"></i> Miễn trừ trách nhiệm</h5>
-                <p class="text-sm text-gray-400 leading-relaxed italic">Người dùng tự chịu trách nhiệm về tài khoản game cá nhân khi sử dụng script. Chúng tôi chỉ cung cấp giải pháp kỹ thuật và không đảm bảo an toàn 100% trước các đợt quét của nhà phát hành game.</p>
+            <div>
+                <label class="text-xs font-bold text-gray-600 uppercase">Số Seri</label>
+                <input type="text" class="w-full bg-gray-50 border border-gray-200 p-3 rounded-xl outline-none mt-1" placeholder="Nhập số seri">
             </div>
+            <button onclick="submitPayment()" class="w-full bg-green-500 text-white font-bold py-3 rounded-xl hover:bg-green-600 transition shadow-lg shadow-green-500/30 mt-4">
+                XÁC NHẬN NẠP THẺ
+            </button>
         </div>
-    </section>
+    </div>
 
-    <footer class="py-10 text-center border-t border-gray-900 text-gray-600 text-xs">
-        <p class="mb-2">Hệ thống vận hành bởi TuX Hub</p>
-        <p>&copy; 2026 Toàn bộ bản quyền thuộc về TuX Key System.</p>
-    </footer>
+    <script>
+        function handleLogin() {
+            const user = document.getElementById('username').value;
+            const pass = document.getElementById('password').value;
+            if(user.length > 2 && pass.length > 2) {
+                document.getElementById('auth-view').classList.add('hidden-view');
+                document.getElementById('dashboard-view').classList.remove('hidden-view');
+                document.getElementById('display-user').innerText = user;
+            } else {
+                alert("Vui lòng nhập tên và mật khẩu hợp lệ!");
+            }
+        }
 
+        function handleRegister() {
+            const user = document.getElementById('username').value;
+            const pass = document.getElementById('password').value;
+            if(user.length > 2 && pass.length > 2) {
+                alert("Đăng ký thành công! Đang tự động đăng nhập...");
+                handleLogin();
+            } else {
+                alert("Tên và mật khẩu phải dài hơn 2 ký tự!");
+            }
+        }
+
+        function logout() {
+            document.getElementById('dashboard-view').classList.add('hidden-view');
+            document.getElementById('auth-view').classList.remove('hidden-view');
+            document.getElementById('username').value = "";
+            document.getElementById('password').value = "";
+        }
+
+        function openPayment(plan, price) {
+            document.getElementById('dashboard-view').classList.add('hidden-view');
+            document.getElementById('payment-view').classList.remove('hidden-view');
+            document.getElementById('selected-plan').innerText = plan;
+            document.getElementById('selected-price').innerText = price;
+        }
+
+        function closePayment() {
+            document.getElementById('payment-view').classList.add('hidden-view');
+            document.getElementById('dashboard-view').classList.remove('hidden-view');
+        }
+
+        function submitPayment() {
+            alert("Đã gửi thẻ, hệ thống đang xử lý! Vui lòng chờ...");
+            closePayment();
+        }
+    </script>
 </body>
 </html>
